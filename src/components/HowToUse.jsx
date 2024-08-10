@@ -1,10 +1,10 @@
 import { sections } from "../constants";
 import SectionCards from "./SectionCards";
 
-const HowToUse = () => {
+const HowToUse = ({ id}) => {
   return (
     <section
-      id="how to use"
+      id={id}
       className="py-6 sm:py-16 flex justify-center items-center flex-col relative"
     >
       <div className="absolute z-[0] w-[60%] h-[60%] -right-[50%] rounded-full blue__gradient bottom-40" />
