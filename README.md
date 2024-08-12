@@ -116,6 +116,8 @@ The machine learning model evaluates loan eligibility and risk based on applican
 The following features are used in the model:
 
 - `current_salary`: **Current Salary** - The applicant's current salary to determine their financial capacity.
+-`previous_hike_amount`: **Previous Hike Amount** The amount of the previous salary hike.
+-`expected_next_hike_amount`: **Expected NextHike Amount** The anticipated amount of the next salary hike
 - `loan_amount`: **Requested Loan Amount** - The amount the applicant is requesting to borrow.
 - `residential_assets_value`: **Residential Assets Value** - The value of the applicant's residential properties.
 - `commercial_assets_value`: **Commercial Assets Value** - The value of the applicant's commercial properties.
@@ -153,6 +155,8 @@ The following features are used in the model:
   - `average_spending_per_visit`: Float - Average spending per mall visit.
   - `savings_per_month`: Float - Monthly savings.
   - `other_monthly_expenses`: Float - Other monthly expenses.
+  -  `previous_hike_amount`: Float - Previous Hike Amount,
+  -`expected_next_hike_amount`: Float -Expect  Next Hike Amount
 
 - **Response**:
   - **Success**:
