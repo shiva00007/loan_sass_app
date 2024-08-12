@@ -196,9 +196,32 @@ After running the model, you can view the results and output directly in the Col
   - `savings_per_month`: Float - Monthly savings.
   - `other_monthly_expenses`: Float - Other monthly expenses.
   - `previous_hike_amount`: Float - Previous Hike Amount.
-  - `expected_next_hike_amount`: Float - Expect  Next Hike Amount.
-
-- **Response**:
+  - `expected_next_hike_amount`: Float - Expect  Next Hike Amount
+  - 
+- **Example Request Data**:
+  - **Status Code**: 200 OK
+    - **Body**:
+      ```json
+      {
+        "current_salary": 40000,
+        "loan_amount": 100000,
+        "residential_assets_value": 600000,
+        "commercial_assets_value": 150000,
+        "luxury_assets_value": 40000,
+        "current_emis": 12000,
+        "credit_score": 690,
+        "cibil_score": 710,
+        "total_monthly_mall_expenditure": 2500,
+        "emi_amount": 15000,
+        "annual_interest_rate": 9.0,
+        "frequency_of_mall_visits": 4,
+        "average_spending_per_visit": 600,
+        "savings_per_month": 2000,
+        "other_monthly_expenses": 2000,
+        "previous_hike_amount": 2500,
+        "expected_next_hike_amount": 3000
+        }
+      ```
   - **Success**:
     - **Status Code**: 200 OK
     - **Body**:
