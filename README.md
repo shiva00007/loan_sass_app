@@ -8,10 +8,41 @@ This project includes a comprehensive loan application system featuring user aut
 
 ## Table of Contents
 
+- [Installation](#installation)
 - [Node.js Authentication API](#nodejs-authentication-api)
 - [Machine Learning Model Documentation](#machine-learning-model-documentation)
 - [React Application](#react-application)
-- [Installation](#installation)
+
+  
+## React Application
+
+### Description
+
+The React application provides a user-friendly interface for interacting with the loan application system. Users can register, log in, and apply for loans through the web application.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   ```
+2. Navigate to the `react-app` directory:
+   ```bash
+   cd react-app
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+### Usage
+
+1. Start the development server:
+   ```bash
+   npm run dev
+   ```
+2. Access the React application at `http://localhost:3000`.
+
 
 ## Node.js Authentication API
 
@@ -84,15 +115,11 @@ This Node.js API handles user authentication and registration functionalities. I
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
-2. Navigate to the `auth` directory:
+1. Navigate to the `Server` directory:
    ```bash
    cd Server
    ```
-3. Install dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
@@ -281,34 +308,6 @@ After running the model, you can view the results and output directly in the Col
    ```
 2. The API will be accessible at `http://localhost:8000`.
 
-## React Application
-
-### Description
-
-The React application provides a user-friendly interface for interacting with the loan application system. Users can register, log in, and apply for loans through the web application.
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   ```
-2. Navigate to the `react-app` directory:
-   ```bash
-   cd react-app
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-### Usage
-
-1. Start the development server:
-   ```bash
-   npm run dev
-   ```
-2. Access the React application at `http://localhost:3000`.
 
 
 
