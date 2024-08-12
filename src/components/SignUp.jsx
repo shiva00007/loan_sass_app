@@ -20,14 +20,16 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
+
+    //to check the all fields not null
 
     const { username, email, phNumber, password } = form;
     if (!username || !email || !phNumber || !password) {
       setError("Please fill in all required fields.");
       return;
     }
-
+    //fetch the data
     try {
       const response = await fetch("http://localhost:8080/auth/signup", {
         method: "POST",
@@ -37,7 +39,7 @@ const SignUp = () => {
         body: JSON.stringify({
           name: username,
           email,
-          phoneNumber: phNumber, // Ensure this field matches backend expectations
+          phoneNumber: phNumber,
           password,
         }),
       });
@@ -48,7 +50,7 @@ const SignUp = () => {
         throw new Error(data.message || "Signup failed. Please try again.");
       }
 
-      console.log(data); // For debugging purposes
+      // console.log(data);
       navigate("/login");
     } catch (error) {
       setError(error.message || "Error signing up. Please try again.");
@@ -124,7 +126,10 @@ const SignUp = () => {
             <span className="flex justify-center items-center text-white text-xl">
               Already have an account?
             </span>
-            <Link to="/login" className="text-center text-white text-xl">
+            <Link
+              to="/login"
+              className="text-center  text-white hover:text-teal-500 text-xl"
+            >
               Login
             </Link>
           </div>

@@ -4,7 +4,6 @@ from pydantic import BaseModel, ValidationError
 import joblib
 import pandas as pd
 import math
-
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
@@ -20,7 +19,7 @@ app.add_middleware(
 )
 
 # Load the model
-model = joblib.load('./model2.pkl')
+model = joblib.load('./model3.pkl')
 
 # Define the applicant data model with additional fields
 class Applicant(BaseModel):
@@ -39,6 +38,8 @@ class Applicant(BaseModel):
     average_spending_per_visit: float
     savings_per_month: float
     other_monthly_expenses: float
+    previous_hike_amount: float
+    expected_next_hike_amount: float
 
 # Define features used in model
 features = [
@@ -46,7 +47,8 @@ features = [
     'luxury_assets_value', 'loan_to_income_ratio', 'spending_to_income_ratio',
     'repayment_to_income_ratio', 'credit_score', 'cibil_score',
     'savings_per_month', 'average_spending_per_visit', 'other_monthly_expenses',
-    'total_monthly_mall_expenditure', 'emi_amount', 'current_emis'
+    'total_monthly_mall_expenditure', 'emi_amount', 'current_emis',
+    'previous_hike_amount', 'expected_next_hike_amount'
 ]
 
 def calculate_loan_amount_and_risk(applicant: Applicant):

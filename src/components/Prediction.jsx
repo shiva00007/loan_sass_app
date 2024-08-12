@@ -1,7 +1,20 @@
 import UserForm from "./UserForm";
 import { register } from "../assets";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Prediction = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const d = localStorage.getItem("jwtToken");
+
+    if (!d) {
+      alert("Kindly login and continue");
+      navigate("/");
+    }
+  }, []);
+
   return (
     <section className="flex flex-col md:flex-row h-screen max-h-screen bg-discount-gradient-2 text-white">
       <section className="relative flex-1 overflow-y-auto px-[5%]">

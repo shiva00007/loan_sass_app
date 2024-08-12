@@ -1,7 +1,7 @@
 import { sections } from "../constants";
 import SectionCards from "./SectionCards";
 
-const HowToUse = ({ id}) => {
+const HowToUse = ({ id }) => {
   return (
     <section
       id={id}
@@ -10,6 +10,7 @@ const HowToUse = ({ id}) => {
       <div className="absolute z-[0] w-[60%] h-[60%] -right-[50%] rounded-full blue__gradient bottom-40" />
 
       <div className="w-full flex justify-between items-center md:flex-row flex-col sm:mb-16 mb-6 relative z-[1]">
+        {/* title */}
         <h2 className="font-poppins font-semibold xs:text-[48px] text-[40px] text-white xs:leading-[76.8px] leading-[66.8px] w-full">
           What People are <br className="sm:block hidden" /> saying about us
         </h2>
@@ -20,6 +21,7 @@ const HowToUse = ({ id}) => {
           </p>
         </div>
       </div>
+      {/* //custom FeatureCard */}
       <div className="flex flex-wrap sm:justify-start justify-center w-full feedback-container relative z-[1]">
         {sections.map((card) => (
           <SectionCards key={card.id} {...card} />

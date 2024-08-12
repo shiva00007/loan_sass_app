@@ -15,7 +15,7 @@ const Navbar = () => {
         <li className="font-poppins font-normal cursor-pointer text-[16px] text-white space-x-4">
           <Link to="/">Home</Link>
           <a href="/#feature">Features</a>
-          <a href="/#howtouse">How To Use</a>
+          <a href="/#howtouse">How It Works</a>
           <Link to="/prediction">Prediction</Link>
           <button className="py-2 px-4 bg-blue-gradient font-poppins font-medium text-[18px] text-primary outline-none rounded-lg">
             <Link to="/SignUp">Login</Link>

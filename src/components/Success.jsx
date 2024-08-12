@@ -3,21 +3,47 @@ import { useLocation } from "react-router-dom";
 const Success = () => {
   const location = useLocation();
   const { responseData } = location.state || {};
+  console.log("Success");
+  console.log(responseData.status);
 
   if (!responseData) {
-    return <div>No data available</div>;
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-800 text-white">
+        No data available
+      </div>
+    );
   }
 
   return (
-    <div className="p-4 md:p-8 lg:p-12">
-      <h1 className="text-2xl font-bold text-white">Loan Details</h1>
-      <div className="mt-4">
-        <p className="text-white">Loan Amount: {responseData.loan_amount}</p>
-        <p className="text-white">
-          Approval Status: {responseData.approval_status}
-        </p>
-        <p className="text-white">EMI Period: {responseData.emi_period}</p>
-        <p className="text-white">Risk Score: {responseData.risk_score}</p>
+    <div className="flex justify-center items-center h-screen bg-gray-800">
+      <div className="bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full">
+        <h1 className="text-3xl font-bold text-white mb-6">Loan Details</h1>
+        <div className="space-y-4">
+          <div className="bg-gray-800 p-4 rounded-md">
+            <p className="text-white text-lg">
+              <span className="font-semibold">Loan Amount:</span> Rs
+              {responseData.amount}
+            </p>
+          </div>
+          <div className="bg-gray-gradient  p-4 rounded-md">
+            <p className="text-white text-lg">
+              <span className="font-semibold">Approval Status:</span>{" "}
+              {responseData.status}
+            </p>
+          </div>
+          <div className="bg-gray-gradient  p-4 rounded-md">
+            <p className="text-white text-lg">
+              <span className="font-semibold">EMI Period:</span>{" "}
+              {responseData.emi_period} months
+            </p>
+          </div>
+          <div className="bg-gray-gradient  p-4 rounded-md">
+            <p className="text-white text-lg">
+              <span className="font-semibold">Risk Score:</span>{" "}
+              {responseData.risk_score}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

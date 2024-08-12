@@ -9,8 +9,10 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
+  // to handle a Changeevent
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
@@ -94,10 +96,10 @@ const Login = () => {
             Login
           </button>
           <div className="flex flex-col sm:flex-row items-center justify-between text-sm text-white mt-4">
-            <span className="mb-2 sm:mb-0">Don't Have an Account?</span>
+            <span className="mb-2 sm:mb-0 text-xl">Don't Have an Account?</span>
             <Link
               to="/signup"
-              className="text-blue-500 hover:text-blue-700 transition duration-300"
+              className="text-white text-xl hover:text-teal-500 transition duration-300"
             >
               Sign Up
             </Link>

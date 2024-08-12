@@ -9,33 +9,51 @@ import {
   FaHome,
   FaRupeeSign,
   FaBehanceSquare,
+  FaSourcetree,
 } from "react-icons/fa";
 
 import FormInput from "./FormInput";
+import { FaScaleBalanced } from "react-icons/fa6";
 
 const UserForm = () => {
   const [formData, setFormData] = useState({
+    // Personal Information
     name: "",
     email: "",
     phone: "",
     company: "",
     address: "",
+    ownsHouse: "",
+    maritalStatus: "",
+
+    // Employment Information
     currentSalary: "",
     previousSalary: "",
+    previousHikeAmount: "", // Added field
+    expectedNextHikeAmount: "", // Added field
+
+    // Spending Information
     groceryExpense: "",
     currentEmis: "",
-    ownsHouse: "",
+    frequencyOfMallVisits: "",
+    averageSpendingPerVisit: "",
+    savingsPerMonth: "",
+    otherMonthlyExpenses: "",
     rentAmount: "",
-    datePreviousHike: "",
-    dateNextHike: "",
-    bankName: "",
-    pan: "",
-    loanAmount: "",
-    emiAmount: "",
+
+    // Asset Information
     residentialAssetsValue: "",
     commercialAssetsValue: "",
     luxuryAssetsValue: "",
-    loanPurpose: "",
+
+    // Credit Information
+    creditScore: "",
+    cibilScore: "",
+
+    // Loan Information
+    loanAmount: "",
+    emiAmount: "",
+    loanPurpose: "", // Added field
   });
 
   const navigate = useNavigate();
@@ -62,18 +80,23 @@ const UserForm = () => {
       commercial_assets_value: parseFloat(formData.commercialAssetsValue) || 0,
       luxury_assets_value: parseFloat(formData.luxuryAssetsValue) || 0,
       current_emis: parseFloat(formData.currentEmis) || 0,
-      credit_score: parseFloat(formData.pan) || 0, //
-      cibil_score: parseFloat(formData.pan) || 0, // R
+      credit_score: parseFloat(formData.creditScore) || 0,
+      cibil_score: parseFloat(formData.cibilScore) || 0,
       total_monthly_mall_expenditure: parseFloat(formData.groceryExpense) || 0,
       emi_amount: parseFloat(formData.emiAmount) || 0,
-      annual_interest_rate: 0, // Default value, adjust if need
-      frequency_of_mall_visits: 0, // Default value, adjust if need
-      average_spending_per_visit: parseFloat(formData.groceryExpense) || 0,
-      savings_per_month: 0, // Default value, adjust if needed
-      other_monthly_expenses: parseFloat(formData.rentAmount) || 0,
+      annual_interest_rate: parseFloat(formData.annualInterestRate) || 0,
+      frequency_of_mall_visits: parseFloat(formData.frequencyOfMallVisits) || 0,
+      average_spending_per_visit:
+        parseFloat(formData.averageSpendingPerVisit) || 0,
+      savings_per_month: parseFloat(formData.savingsPerMonth) || 0,
+      other_monthly_expenses: parseFloat(formData.otherMonthlyExpenses) || 0,
+      previous_hike_amount: parseFloat(formData.previousHikeAmount) || 0,
+      expected_next_hike_amount:
+        parseFloat(formData.expectedNextHikeAmount) || 0,
     };
 
-    //model backend api call with all features
+    console.log(requestData);
+
     try {
       const response = await axios.post(
         "http://localhost:8000/predict/",
@@ -81,11 +104,9 @@ const UserForm = () => {
       );
       console.log("Response data:", response.data);
 
-      // Navigate to success page with response data
       navigate("/success", { state: { responseData: response.data } });
     } catch (error) {
       console.error("Error submitting form:", error);
-
       alert("There was an error submitting your form. Please try again.");
     }
   };
@@ -106,7 +127,7 @@ const UserForm = () => {
               id="name"
               name="name"
               type="text"
-              label="Username"
+              label="Name"
               placeholder="Enter your Name"
               icon={<FaUser />}
               value={formData.name}
@@ -131,7 +152,7 @@ const UserForm = () => {
               id="phone"
               name="phone"
               type="tel"
-              label="Mobile Number"
+              label="Phone"
               placeholder="Enter your phone number"
               icon={<FaPhone />}
               value={formData.phone}
@@ -151,10 +172,19 @@ const UserForm = () => {
               id="owns-house"
               name="ownsHouse"
               type="text"
-              label="Owns House (Yes/No)"
+              label="Owns House (Yes / No)"
               placeholder="Enter Yes or No"
               icon={<FaHome />}
               value={formData.ownsHouse}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              id="marital-status"
+              name="maritalStatus"
+              type="text"
+              label="Married Status"
+              placeholder="Enter Marital Status (e.g., Single, Married)"
+              value={formData.maritalStatus}
               onChange={handleInputChange}
             />
           </div>
@@ -168,7 +198,7 @@ const UserForm = () => {
               id="company"
               name="company"
               type="text"
-              label="Company Name"
+              label="Company"
               placeholder="Enter your Company Name"
               icon={<FaBehanceSquare />}
               value={formData.company}
@@ -189,20 +219,30 @@ const UserForm = () => {
               id="previous-salary"
               name="previousSalary"
               type="number"
-              label="Previous Salary Hike"
-              placeholder="Enter previous salary hike"
+              label="Previous Salary"
+              placeholder="Enter Previous Salary"
               icon={<FaRupeeSign />}
               value={formData.previousSalary}
               onChange={handleInputChange}
             />
             <FormInput
-              id="date-next-hike"
-              name="dateNextHike"
-              type="text"
-              label="Estimated Next Salary Hike"
-              placeholder="Estimated Next Salary Hike"
+              id="previous-hike-amount"
+              name="previousHikeAmount"
+              type="number"
+              label="Previous Hike Amount"
+              placeholder="Enter Previous Hike Amount"
               icon={<FaRupeeSign />}
-              value={formData.dateNextHike}
+              value={formData.previousHikeAmount}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              id="expected-next-hike-amount"
+              name="expectedNextHikeAmount"
+              type="number"
+              label="Expected Next Hike Amount"
+              placeholder="Enter Expected Next Hike Amount"
+              icon={<FaRupeeSign />}
+              value={formData.expectedNextHikeAmount}
               onChange={handleInputChange}
             />
           </div>
@@ -215,15 +255,14 @@ const UserForm = () => {
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormInput
-              id="savings-month"
-              name="currentSalary"
+              id="grocery-expense"
+              name="groceryExpense"
               type="number"
-              label="Savings For Month"
-              placeholder="Enter Savings For Month"
+              label="Grocery Expense"
+              placeholder="Enter Grocery Expense"
               icon={<FaRupeeSign />}
-              value={formData.currentSalary}
+              value={formData.groceryExpense}
               onChange={handleInputChange}
-              required
             />
             <FormInput
               id="current-emis"
@@ -235,23 +274,51 @@ const UserForm = () => {
               value={formData.currentEmis}
               onChange={handleInputChange}
             />
-          </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormInput
-              id="grocery-expense"
-              name="groceryExpense"
+              id="frequency-of-mall-visits"
+              name="frequencyOfMallVisits"
               type="number"
-              label="Approximate Grocery Expense per Month"
-              placeholder="Enter Grocery Expense"
+              label="Frequency of Mall Visits"
+              placeholder="Enter Frequency of Mall Visits"
               icon={<FaRupeeSign />}
-              value={formData.groceryExpense}
+              value={formData.frequencyOfMallVisits}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              id="average-spending-per-visit"
+              name="averageSpendingPerVisit"
+              type="number"
+              label="Average Spending per Visit"
+              placeholder="Enter Average Spending per Visit"
+              icon={<FaRupeeSign />}
+              value={formData.averageSpendingPerVisit}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              id="savings-per-month"
+              name="savingsPerMonth"
+              type="number"
+              label="Savings per Month"
+              placeholder="Enter Savings per Month"
+              icon={<FaRupeeSign />}
+              value={formData.savingsPerMonth}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              id="other-monthly-expenses"
+              name="otherMonthlyExpenses"
+              type="number"
+              label="Other Monthly Expenses"
+              placeholder="Enter Other Monthly Expenses"
+              icon={<FaRupeeSign />}
+              value={formData.otherMonthlyExpenses}
               onChange={handleInputChange}
             />
             <FormInput
               id="rent-amount"
               name="rentAmount"
               type="number"
-              label="Rent Amount (if applicable)"
+              label="Rent Amount"
               placeholder="Enter Rent Amount"
               icon={<FaRupeeSign />}
               value={formData.rentAmount}
@@ -260,12 +327,12 @@ const UserForm = () => {
           </div>
         </section>
 
-        {/* Assets Information */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold">Assets Information</h2>
+        {/* Asset Information */}
+        <section className="space-y-6">
+          <h2 className="text-xl font-semibold">Asset Information</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormInput
-              id="residential-assets"
+              id="residential-assets-value"
               name="residentialAssetsValue"
               type="number"
               label="Residential Assets Value"
@@ -273,10 +340,9 @@ const UserForm = () => {
               icon={<FaRupeeSign />}
               value={formData.residentialAssetsValue}
               onChange={handleInputChange}
-              required
             />
             <FormInput
-              id="commercial-assets"
+              id="commercial-assets-value"
               name="commercialAssetsValue"
               type="number"
               label="Commercial Assets Value"
@@ -286,7 +352,7 @@ const UserForm = () => {
               onChange={handleInputChange}
             />
             <FormInput
-              id="luxury-assets"
+              id="luxury-assets-value"
               name="luxuryAssetsValue"
               type="number"
               label="Luxury Assets Value"
@@ -298,9 +364,36 @@ const UserForm = () => {
           </div>
         </section>
 
-        {/* Loan Details */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold">Loan Details</h2>
+        {/* Credit Information */}
+        <section className="space-y-2">
+          <h2 className="text-xl font-semibold">Credit Information</h2>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <FormInput
+              id="credit-score"
+              name="creditScore"
+              type="number"
+              label="Credit Score"
+              placeholder="Enter Credit Score"
+              icon={<FaSourcetree />}
+              value={formData.creditScore}
+              onChange={handleInputChange}
+            />
+            <FormInput
+              id="cibil-score"
+              name="cibilScore"
+              type="number"
+              label="CIBIL Score"
+              placeholder="Enter CIBIL Score"
+              icon={<FaSourcetree />}
+              value={formData.cibilScore}
+              onChange={handleInputChange}
+            />
+          </div>
+        </section>
+
+        {/* Loan Information */}
+        <section className="space-y-2">
+          <h2 className="text-xl font-semibold">Loan Information</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <FormInput
               id="loan-amount"
@@ -311,7 +404,6 @@ const UserForm = () => {
               icon={<FaRupeeSign />}
               value={formData.loanAmount}
               onChange={handleInputChange}
-              required
             />
             <FormInput
               id="emi-amount"
@@ -327,8 +419,8 @@ const UserForm = () => {
               id="loan-purpose"
               name="loanPurpose"
               type="text"
-              label="Purpose of Loan"
-              placeholder="Enter Loan Purpose"
+              label="Loan Purpose"
+              placeholder="Enter the purpose of the loan"
               value={formData.loanPurpose}
               onChange={handleInputChange}
             />
@@ -337,9 +429,9 @@ const UserForm = () => {
 
         <button
           type="submit"
-          className="px-5 h-10 bg-blue-gradient text-white w-full rounded-lg mt-3 hover:bg-green-500 font-bold"
+          className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
         >
-          Predict
+          Submit
         </button>
       </form>
     </div>
