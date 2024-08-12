@@ -155,8 +155,8 @@ The following features are used in the model:
   - `average_spending_per_visit`: Float - Average spending per mall visit.
   - `savings_per_month`: Float - Monthly savings.
   - `other_monthly_expenses`: Float - Other monthly expenses.
-  -  `previous_hike_amount`: Float - Previous Hike Amount,
-  -`expected_next_hike_amount`: Float -Expect  Next Hike Amount
+  - `previous_hike_amount`: Float - Previous Hike Amount.
+  - `expected_next_hike_amount`: Float - Expect  Next Hike Amount.
 
 - **Response**:
   - **Success**:
