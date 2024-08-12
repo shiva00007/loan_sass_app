@@ -90,7 +90,7 @@ This Node.js API handles user authentication and registration functionalities. I
    ```
 2. Navigate to the `auth` directory:
    ```bash
-   cd auth
+   cd Server
    ```
 3. Install dependencies:
    ```bash
@@ -116,8 +116,8 @@ The machine learning model evaluates loan eligibility and risk based on applican
 The following features are used in the model:
 
 - `current_salary`: **Current Salary** - The applicant's current salary to determine their financial capacity.
--`previous_hike_amount`: **Previous Hike Amount** The amount of the previous salary hike.
--`expected_next_hike_amount`: **Expected NextHike Amount** The anticipated amount of the next salary hike
+- `previous_hike_amount`: **Previous Hike Amount** - The amount of the previous salary hike.
+- `expected_next_hike_amount`: **Expected Next Hike Amount** - The anticipated amount of the next salary hike.
 - `loan_amount`: **Requested Loan Amount** - The amount the applicant is requesting to borrow.
 - `residential_assets_value`: **Residential Assets Value** - The value of the applicant's residential properties.
 - `commercial_assets_value`: **Commercial Assets Value** - The value of the applicant's commercial properties.
@@ -132,6 +132,46 @@ The following features are used in the model:
 - `average_spending_per_visit`: **Average Spending per Visit** - Average amount spent during each mall visit.
 - `savings_per_month`: **Monthly Savings** - Amount saved by the applicant each month.
 - `other_monthly_expenses`: **Other Monthly Expenses** - Other financial obligations not covered by existing EMIs.
+
+### Installation and Running Guide
+
+#### Installation
+
+1. **Navigate to the Project Directory**:
+   ```bash
+   cd TrainedModel
+   ```
+2. **Install Dependencies**:
+   ```bash
+    pip install -r requirements.txt
+   ```
+3.Running the Model on Google Colab
+
+  Upload the Colab Notebook:
+  Open Google Colab in your browser: Google Colab
+  Upload the Colab notebook file from your local machine to Colab.
+
+  Install any necessary libraries by running the following command in a Colab cell:
+  **Install Required Libaries**:
+   ```bash
+    !pip install <required-libraries>
+   ```
+4.Read the Dataset:
+  
+  Load your dataset into a Pandas DataFrame. Adjust the path according to your file location:
+  **Navigate to the Dataset Directory**:
+   ```bash
+   cd data
+   ```
+  ```bash
+    df = pd.read_csv("/content/loan_application_data.csv")
+   ```
+5.Run the Model:
+
+Execute the cells in your Colab notebook to run the model. Ensure that all necessary code blocks, such as data preprocessing, model training, and prediction, are executed in the correct order.
+View Results:
+
+After running the model, you can view the results and output directly in the Colab notebook.
 
 ### API Documentation
 
@@ -209,10 +249,6 @@ The following features are used in the model:
      ```bash
      source venv/bin/activate
      ```
-5. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
 
 ### Usage
 
