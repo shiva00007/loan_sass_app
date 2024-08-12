@@ -1,6 +1,6 @@
 
 
-# Micro Credit Application with Machine Learning
+# Micro Credit Application Using Machine Learning
 
 ## Description
 
