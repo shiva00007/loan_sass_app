@@ -429,7 +429,7 @@ const UserForm = () => {
 
         <button
           type="submit"
-          className="w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+          className="w-full px-4 py-2 text-white bg-blue-gradient rounded "
         >
           Submit
         </button>
