@@ -4,6 +4,7 @@ import { FaMailBulk, FaLock } from "react-icons/fa";
 import FormInput from "./FormInput";
 
 const Login = () => {
+  //To set a Initial State with empty
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -18,11 +19,14 @@ const Login = () => {
     setForm({ ...form, [name]: value });
   };
 
+  //to handle a Button Sumbit Event
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
+    //to destructe a loginData
     const { email, password } = form;
+
     if (!email || !password) {
       setError("Please fill in all required fields.");
       return;

@@ -11,7 +11,7 @@ import Login from "./components/Login";
 import Success from "./components/Success";
 
 const HomePage = () => (
-  //home page route
+  // custom home page route
   <div className="bg-primary w-full overflow-hidden">
     <div className="flex items-center justify-center px-6 sm:px-16">
       <div className="w-full xl:max-w-[1280px]">

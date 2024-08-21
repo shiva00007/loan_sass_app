@@ -4,32 +4,41 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  // State to manage form data with initial values
   const [form, setForm] = useState({
     username: "",
     email: "",
     phNumber: "",
     password: "",
   });
+
+  // State to manage error messages
   const [error, setError] = useState("");
+
+  // navigate after successful signup
   const navigate = useNavigate();
 
+  // To handle input changes and update the state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
+  //  To handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+    e.preventDefault(); // Prevent default form submission
+    setError(""); // Reset error state
 
-    //to check the all fields not null
-
+    // Destructure a value
     const { username, email, phNumber, password } = form;
+
+    // Check if all fields are filled
     if (!username || !email || !phNumber || !password) {
       setError("Please fill in all required fields.");
       return;
     }
-    //fetch the data
+
+    // Fetch API call to submit form data to the backend
     try {
       const response = await fetch("http://localhost:8080/auth/signup", {
         method: "POST",
@@ -44,17 +53,19 @@ const SignUp = () => {
         }),
       });
 
-      const data = await response.json();
+      const data = await response.json(); // Parse the response data
 
+      // If the response is not ok, throw an error
       if (!response.ok) {
         throw new Error(data.message || "Signup failed. Please try again.");
       }
 
-      // console.log(data);
+      // Navigate to the login page after successful signup
       navigate("/login");
     } catch (error) {
+      // Set the error message if signup fails
       setError(error.message || "Error signing up. Please try again.");
-      console.error("Error:", error);
+      // console.error("Error:", error);
     }
   };
 
@@ -65,6 +76,7 @@ const SignUp = () => {
           Sign Up
         </h1>
         <form className="space-y-4 sm:space-y-6" onSubmit={handleSubmit}>
+          {/* Username Input Field */}
           <FormInput
             id="username"
             name="username"
@@ -77,6 +89,7 @@ const SignUp = () => {
             required
             autoComplete="name"
           />
+          {/* Email Input Field */}
           <FormInput
             id="email"
             name="email"
@@ -89,6 +102,7 @@ const SignUp = () => {
             required
             autoComplete="email"
           />
+          {/* Phone Number Input Field */}
           <FormInput
             id="phNumber"
             name="phNumber"
@@ -101,6 +115,7 @@ const SignUp = () => {
             required
             autoComplete="tel"
           />
+          {/* Password Input Field */}
           <FormInput
             id="password"
             name="password"
@@ -114,21 +129,25 @@ const SignUp = () => {
             autoComplete="new-password"
           />
 
+          {/* Error message display */}
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full px-4 py-2 bg-blue-gradient text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-300"
           >
             Sign Up
           </button>
+
+          {/* Link to login page */}
           <div className="flex flex-col sm:flex-row items-center justify-between text-sm text-white">
             <span className="flex justify-center items-center text-white text-xl">
               Already have an account?
             </span>
             <Link
               to="/login"
-              className="text-center  text-white hover:text-teal-500 text-xl"
+              className="text-center text-white hover:text-teal-500 text-xl"
             >
               Login
             </Link>

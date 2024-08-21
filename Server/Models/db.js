@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const mongoURI = "mongodb://localhost:27017/Auth";
 
+//to connect the mongodb server
 mongoose
   .connect(mongoURI)
   .then(() => {
