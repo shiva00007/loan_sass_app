@@ -5,6 +5,7 @@ const Success = () => {
   // Destructure responseData
   const { responseData } = location.state || {};
 
+  console.log(responseData);
   if (!responseData) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-800 text-white">
@@ -25,21 +26,21 @@ const Success = () => {
           <div className="bg-gray-800 p-4 rounded-md">
             <p className="text-white text-lg">
               <span className="font-semibold">Loan Amount:</span> Rs
-              {responseData.amount}
+              {responseData.max_loan_amount}
             </p>
           </div>
           {/* Approval Status Display */}
           <div className="bg-gray-gradient p-4 rounded-md">
             <p className="text-white text-lg">
               <span className="font-semibold">Approval Status:</span>{" "}
-              {responseData.status}
+              {responseData.loan_approval_status}
             </p>
           </div>
           {/* EMI Period Display */}
           <div className="bg-gray-gradient p-4 rounded-md">
             <p className="text-white text-lg">
               <span className="font-semibold">EMI Period:</span>{" "}
-              {responseData.emi_period} months
+              {responseData.emi_period_months} months
             </p>
           </div>
           {/* Risk Score Display */}

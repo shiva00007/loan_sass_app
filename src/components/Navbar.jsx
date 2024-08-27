@@ -1,10 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { close, logo, menu } from "../assets";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [active, setActive] = useState("Home");
   const [toggle, setToggle] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the user is logged in by verifying if the token exists in localStorage
+    const token = localStorage.getItem("jwtToken");
+    setIsLoggedIn(!!token); // Convert token to a boolean value
+  }, []);
+
+  const handleLogout = () => {
+    // Clear JWT token from local storage
+    localStorage.removeItem("jwtToken");
+    setIsLoggedIn(false);
+    navigate("/login"); // Redirect to home page after logout
+  };
 
   return (
     <nav className="w-full flex py-6 justify-between items-center navbar">
@@ -17,9 +32,20 @@ const Navbar = () => {
           <a href="/#feature">Features</a>
           <a href="/#howtouse">How It Works</a>
           <Link to="/prediction">Prediction</Link>
-          <button className="py-2 px-4 bg-blue-gradient font-poppins font-medium text-[18px] text-primary outline-none rounded-lg">
-            <Link to="/SignUp">Login</Link>
-          </button>
+          {isLoggedIn ? (
+            <button
+              className="py-2 px-4 bg-blue-gradient font-poppins font-medium text-[18px] text-primary outline-none rounded-lg"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link to="/SignUp">
+              <button className="py-2 px-4 bg-blue-gradient font-poppins font-medium text-[18px] text-primary outline-none rounded-lg">
+                Login
+              </button>
+            </Link>
+          )}
         </li>
       </ul>
 
@@ -84,14 +110,22 @@ const Navbar = () => {
             </li>
             <li
               className={`font-poppins font-medium cursor-pointer text-[16px] ${
-                active === "Login" ? "text-white" : "text-dimWhite"
+                active === isLoggedIn
+                  ? "Logout"
+                  : "Login"
+                  ? "text-white"
+                  : "text-dimWhite"
               } mb-4`}
               onClick={() => {
-                setActive("Login");
+                if (isLoggedIn) {
+                  handleLogout();
+                } else {
+                  setActive("Login");
+                }
                 setToggle(false); // Close menu on item click
               }}
             >
-              <Link to="/SignUp">Login</Link>
+              {isLoggedIn ? "Logout" : <Link to="/SignUp">Login</Link>}
             </li>
           </ul>
         </div>
