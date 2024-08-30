@@ -223,22 +223,21 @@ After running the model, you can view the results and output directly in the Col
   - **Status Code**: 200 OK
     - **Body**:
       ```json
-      {{
-  "current_salary": 50000,
-  "previous_salary": 45000,
-  "previous_hike_amount": 3000,
-  "expected_next_hike_amount": 4000,
-  "current_emis": 4000,
-  "savings_per_month": 2000,
-  "residential_assets_value": 60000,
-  "commercial_assets_value": 40000,
-  "luxury_assets_value": 20000,
-  "credit_score": 680,
-  "cibil_score": 700,
-  "loan_amount": 150000,
-  "interest_rate": 10
-}
-
+      {
+        "current_salary": 50000,
+        "previous_salary": 45000,
+        "previous_hike_amount": 3000,
+        "expected_next_hike_amount": 4000,
+        "current_emis": 4000,
+        "savings_per_month": 2000,
+        "residential_assets_value": 60000,
+        "commercial_assets_value": 40000,
+        "luxury_assets_value": 20000,
+        "credit_score": 680,
+        "cibil_score": 700,
+        "loan_amount": 150000,
+        "interest_rate": 10
+      }
       ```
   - **Success**:
     - **Status Code**: 200 OK
