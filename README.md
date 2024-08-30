@@ -143,22 +143,20 @@ The machine learning model evaluates loan eligibility and risk based on applican
 The following features are used in the model:
 
 - `current_salary`: **Current Salary** - The applicant's current salary to determine their financial capacity.
+- `previous_salary`: **Previous Salary** - The applicant's current salary to determine their financial capacity.
 - `previous_hike_amount`: **Previous Hike Amount** - The amount of the previous salary hike.
 - `expected_next_hike_amount`: **Expected Next Hike Amount** - The anticipated amount of the next salary hike.
-- `loan_amount`: **Requested Loan Amount** - The amount the applicant is requesting to borrow.
+- `savings_per_month`: **Monthly Savings** - Amount saved by the applicant each month.
 - `residential_assets_value`: **Residential Assets Value** - The value of the applicant's residential properties.
 - `commercial_assets_value`: **Commercial Assets Value** - The value of the applicant's commercial properties.
 - `luxury_assets_value`: **Luxury Assets Value** - The value of the applicant's luxury items.
 - `current_emis`: **Existing EMIs** - Existing EMI payments to assess the applicant's current financial obligations.
 - `credit_score`: **Credit Score** - A measure of the applicant's creditworthiness.
 - `cibil_score`: **CIBIL Score** - A score used in India to evaluate credit risk.
-- `total_monthly_mall_expenditure`: **Monthly Mall Expenditure** - Total spending at malls, which indicates discretionary spending.
-- `emi_amount`: **EMI Amount** - The amount the applicant can pay monthly towards the loan.
+- `loan_amount`: **Requested Loan Amount** - The amount the applicant is requesting to borrow
 - `annual_interest_rate`: **Annual Interest Rate** - The interest rate on the loan.
-- `frequency_of_mall_visits`: **Frequency of Mall Visits** - How often the applicant visits malls, affecting spending habits.
-- `average_spending_per_visit`: **Average Spending per Visit** - Average amount spent during each mall visit.
-- `savings_per_month`: **Monthly Savings** - Amount saved by the applicant each month.
-- `other_monthly_expenses`: **Other Monthly Expenses** - Other financial obligations not covered by existing EMIs.
+
+
 
 ### Installation and Running Guide
 
@@ -208,46 +206,39 @@ After running the model, you can view the results and output directly in the Col
 - **Description**: Predicts loan approval, calculates the maximum loan amount, and assesses risk score based on applicant data.
 - **Request Body**:
   - `current_salary`: Float - Applicant's current salary.
-  - `loan_amount`: Float - Requested loan amount.
+  - `previous_salary`:Float - Applicant's previous salary.
+  - `previous_hike_amount`: Float - Previous Hike Amount.
+  - `expected_next_hike_amount`: Float - Expect  Next Hike Amount
+  - `savings_per_month`: Float - Monthly savings.
+  - `current_emis`: Float - Existing EMI payments.
   - `residential_assets_value`: Float - Value of residential assets.
   - `commercial_assets_value`: Float - Value of commercial assets.
   - `luxury_assets_value`: Float - Value of luxury assets.
-  - `current_emis`: Float - Existing EMI payments.
   - `credit_score`: Float - Applicant's credit score.
   - `cibil_score`: Float - Applicant's CIBIL score.
-  - `total_monthly_mall_expenditure`: Float - Total monthly expenditure at malls.
-  - `emi_amount`: Float - EMI amount applicant can pay.
   - `annual_interest_rate`: Float - Annual interest rate of the loan.
-  - `frequency_of_mall_visits`: Integer - Number of mall visits per month.
-  - `average_spending_per_visit`: Float - Average spending per mall visit.
-  - `savings_per_month`: Float - Monthly savings.
-  - `other_monthly_expenses`: Float - Other monthly expenses.
-  - `previous_hike_amount`: Float - Previous Hike Amount.
-  - `expected_next_hike_amount`: Float - Expect  Next Hike Amount
-  - 
+  - `loan_amount`: Float - Requested loan amount.
+
 - **Example Request Data**:
   - **Status Code**: 200 OK
     - **Body**:
       ```json
-      {
-        "current_salary": 40000,
-        "loan_amount": 100000,
-        "residential_assets_value": 600000,
-        "commercial_assets_value": 150000,
-        "luxury_assets_value": 40000,
-        "current_emis": 12000,
-        "credit_score": 690,
-        "cibil_score": 710,
-        "total_monthly_mall_expenditure": 2500,
-        "emi_amount": 15000,
-        "annual_interest_rate": 9.0,
-        "frequency_of_mall_visits": 4,
-        "average_spending_per_visit": 600,
-        "savings_per_month": 2000,
-        "other_monthly_expenses": 2000,
-        "previous_hike_amount": 2500,
-        "expected_next_hike_amount": 3000
-        }
+      {{
+  "current_salary": 50000,
+  "previous_salary": 45000,
+  "previous_hike_amount": 3000,
+  "expected_next_hike_amount": 4000,
+  "current_emis": 4000,
+  "savings_per_month": 2000,
+  "residential_assets_value": 60000,
+  "commercial_assets_value": 40000,
+  "luxury_assets_value": 20000,
+  "credit_score": 680,
+  "cibil_score": 700,
+  "loan_amount": 150000,
+  "interest_rate": 10
+}
+
       ```
   - **Success**:
     - **Status Code**: 200 OK
