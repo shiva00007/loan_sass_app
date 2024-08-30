@@ -1,17 +1,16 @@
-# Import necessary libraries 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ValidationError
 import joblib
 import pandas as pd
-import math
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+import math
 
 # Initialize the FastAPI app
 app = FastAPI()
 
-# Add CORS middleware to allow requests from any origin, 
+# To add a cross Orgin
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,138 +19,168 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load the pre-trained machine learning model 
-model = joblib.load('./model3.pkl')
+# Load the pre-trained machine learning model
+model = joblib.load('./model7.pkl')
 
-# Define the Applicant data model using Pydantic with all the necessary fields
+# Define the model
 class Applicant(BaseModel):
     current_salary: float
-    loan_amount: float
+    previous_salary: float
+    previous_hike_amount: float
+    expected_next_hike_amount: float
+    current_emis: float
+    savings_per_month: float
     residential_assets_value: float
     commercial_assets_value: float
     luxury_assets_value: float
-    current_emis: float
     credit_score: float
     cibil_score: float
-    total_monthly_mall_expenditure: float
-    emi_amount: float
-    annual_interest_rate: float
-    frequency_of_mall_visits: int
-    average_spending_per_visit: float
-    savings_per_month: float
-    other_monthly_expenses: float
-    previous_hike_amount: float
-    expected_next_hike_amount: float
+    loan_amount: float
+    interest_rate: float
 
 # Define the list of features used by the model for prediction
 features = [
-    'current_salary', 'loan_amount', 'residential_assets_value', 'commercial_assets_value',
-    'luxury_assets_value', 'loan_to_income_ratio', 'spending_to_income_ratio',
-    'repayment_to_income_ratio', 'credit_score', 'cibil_score',
-    'savings_per_month', 'average_spending_per_visit', 'other_monthly_expenses',
-    'total_monthly_mall_expenditure', 'emi_amount', 'current_emis',
-    'previous_hike_amount', 'expected_next_hike_amount'
+    'current_salary', 'previous_salary', 'previous_hike_amount', 'expected_next_hike_amount',
+    'residential_assets_value', 'commercial_assets_value', 'luxury_assets_value',
+    'cibil_score', 'credit_score', 'loan_amount', 'savings_per_month',
+    'current_emis', 'interest_rate'
 ]
 
-#calculate loan amount and risk score for an applicant
-def calculate_loan_amount_and_risk(applicant: Applicant):
+def calculateEmi(principal: float, annual_rate: float, months: int) -> float:
+    if months <= 0:
+        return None  # Invalid number of months
+    
+    r = annual_rate / 12 / 100  # Convert annual rate to monthly and percentage to decimal
+
+    if r == 0:
+        return principal / months
+
+    # EMI formula calculation
+    emi = (principal * r * (1 + r) ** months) / ((1 + r) ** months - 1)
+    return emi
+
+def calculateRiskScore(applicant_df: pd.DataFrame) -> float:
+    # To check the probablity of risk score
+    risk_probabilities = model.predict_proba(applicant_df)[0]
+
+    rejection_probability = risk_probabilities[0]  # Probability of rejection
+    print(risk_probabilities)
+    print(rejection_probability)
+
+    return rejection_probability * 100  # Convert to percentage
+
+def calculateLoanAndEmi(applicant: Applicant) -> dict:
+   
+    # applicant salary
+    salary = applicant.current_salary 
+    # //asset values
+    assetsValue = (applicant.residential_assets_value +
+                   applicant.commercial_assets_value +
+                   applicant.luxury_assets_value)
+    # exsiting emi
+
+    existingLiabilities = applicant.current_emis
+    # //credit score
+    creditScore = applicant.credit_score
+    loanAmount = applicant.loan_amount
+    annualInterestRate = applicant.interest_rate
+
+    # To calculate the ratio for lonnincome
+    loanIncomeRatio = loanAmount / salary if salary > 0 else 0
+    repaymentRatio = existingLiabilities / salary if salary > 0 else 0
+    
+    # Calculate salary to loan ratio dynamically
+    salaryToLoanRatio = loanIncomeRatio / repaymentRatio if repaymentRatio > 0 else 0
+    print(salaryToLoanRatio)
+
+    # Calculate maximum loan amount based on salary and assets
+    maxLoanBasedOnSalary = salary * salaryToLoanRatio 
+    maxLoanBasedOnAssets = 0.5 * assetsValue
+    adjustedMaxLoan = min(maxLoanBasedOnSalary, maxLoanBasedOnAssets) - existingLiabilities
+    print(adjustedMaxLoan)
+
+    # Adjust loan amount based on credit score
+    if creditScore < 300:
+        adjustedMaxLoan *= 0.5  # Very poor credit
+    elif 300 <= creditScore <= 550:
+        adjustedMaxLoan *= 0.6  # Poor credit
+    elif 551 <= creditScore <= 620:
+        adjustedMaxLoan *= 0.7  # Low credit
+    elif 621 <= creditScore <= 700:
+        adjustedMaxLoan *= 0.8  # Fair credit
+    elif 701 <= creditScore <= 749:
+        adjustedMaxLoan *= 0.9  # Good credit
+    else:
+        adjustedMaxLoan *= 1.0  # Excellent credit
+
+    # Base loan amount based on credit score
+    maxLoanAmount = max(0, adjustedMaxLoan)
+    print(maxLoanAmount)
+
     # Convert the applicant's data to a Pandas DataFrame
-    applicant_dict = applicant.dict()
-    applicant_df = pd.DataFrame([applicant_dict])
+    applicantDict = applicant.dict()
+    applicantDf = pd.DataFrame([applicantDict])
+    
+    # Ensure DataFrame only contains the features used in the model
+    if not all(feature in applicantDict for feature in features):
+        raise HTTPException(status_code=400, detail="Missing required features in applicant data")
+    
+    applicantDf = applicantDf[features]
 
-    # Perform feature engineering to create additional features
-    applicant_df['loan_to_income_ratio'] = applicant_df['loan_amount'] / applicant_df['current_salary']
-    applicant_df['spending_to_income_ratio'] = applicant_df['total_monthly_mall_expenditure'] / applicant_df['current_salary']
-    applicant_df['repayment_to_income_ratio'] = applicant_df['emi_amount'] / applicant_df['current_salary']
+    # Calculate the risk score
+    riskScore = calculateRiskScore(applicantDf)
 
-    # DataFrame only contains the features  uses in a  model
-    applicant_df = applicant_df[features]
+    # Check if requested loan amount exceeds the maximum allowed loan amount
+    if loanAmount > maxLoanAmount:
+        loanApprovalStatus = "rejected"
+        emiAmount = None
+        emiPeriodMonths = None
+    else:
+        # Use the model to predict the loan approval status
+        predict_loan_approval = model.predict(applicantDf)[0]
+        print(predict_loan_approval)
 
-    # Use the model to predict the loan approval status
-    loan_status = model.predict(applicant_df)[0] 
+        # Determine loan approval status based on model prediction
+        loanApprovalStatus = "approved" if predict_loan_approval == 1 else "rejected"
 
-    # Calculate the risk score as the probability of loan rejection
-    risk_score = model.predict_proba(applicant_df)[0][0] * 100  # Probability of being rejected
-    print(risk_score)
+        # Determine EMI amount and period if the loan is approved
+        emiAmount = None
+        emiPeriodMonths = None
+        if loanApprovalStatus == "approved":
+            # Iterate over possible EMI periods from 12 to 60 months
+            for period in range(12, 61, 6):
+                emi = calculateEmi(maxLoanAmount, annualInterestRate, period)
+                if emi is not None and emi <= (salary * 0.4):  # Ensure EMI is not more than 40% of salary
+                    emiAmount = round(emi, 2)
+                    emiPeriodMonths = period
+                    break  # Break the loop once a valid period is found
 
-    # Extract relevant applicant data for loan amount calculation
-    salary = applicant.current_salary
-    assets_value = (applicant.residential_assets_value +
-                    applicant.commercial_assets_value +
-                    applicant.luxury_assets_value)
-    existing_liabilities = applicant.current_emis
-    credit_score = applicant.credit_score
-    loan_amount = applicant.loan_amount
-    annual_interest_rate = applicant.annual_interest_rate
-
-    #  loan eligibility criteria based on salary and assets
-    salary_to_loan_ratio = 4
-    max_loan_based_on_salary = salary * salary_to_loan_ratio
-    max_loan_based_on_assets = 0.5 * assets_value
-    adjusted_max_loan = min(max_loan_based_on_salary, max_loan_based_on_assets) - existing_liabilities
-
-    # creditScore Define 
-    if credit_score < 600:
-        adjusted_max_loan *= 0.8
-
-    # to caluculathe maxloanAmount
-    max_loan_amount = max(0, adjusted_max_loan)
-
-    # D loan approval status based on the requested loan amount
-    loan_approval_status = "approved" if loan_amount <= max_loan_amount else "rejected"
-
-    # Handle the case where the loan is rejected
-    if loan_approval_status == "rejected":
-        return {
-            "loan_approval_status": loan_approval_status,
-            "message": "Loan application rejected. The requested loan amount exceeds the maximum loan amount that can be granted based on the applicant's profile and credit score.",
-            "max_loan_amount": max_loan_amount,
-            "risk_score": risk_score,
-            "emi_period_months": None
-        }
-
-    # Function to calculate the EMI payment period
-    def calculate_emi_period(principal, annual_rate, emi_amount):
-        if emi_amount <= 0:
-            return None  # Invalid EMI amount
-
-        r = annual_rate / 12 / 100  # Monthly interest rate
-        if r == 0:
-            return 1 if emi_amount >= principal else math.ceil(principal / emi_amount)
-
-        if emi_amount >= principal:
-            return 1  # Can be paid off in one month
-
-        try:
-            # Calculate the number of months needed to repay the loan
-            n = math.log(emi_amount / (emi_amount - principal * r)) / math.log(1 + r)
-            return math.ceil(n)
-        except ValueError:
-            return None  
-
-    # EMI payment period based on the loan amount, interest rate, and EMI amount
-    emi_period_months = calculate_emi_period(loan_amount, annual_interest_rate, applicant.emi_amount)
-
-    # Return the result including loan approval status, maximum loan amount, risk score, and EMI period
     return {
-        "loan_approval_status": loan_approval_status,
-        "max_loan_amount": max_loan_amount,
-        "risk_score": risk_score,
-        "emi_period_months": emi_period_months
+        "loanApprovalStatus": loanApprovalStatus,
+        "maxLoanAmount": maxLoanAmount,
+        "riskScore": riskScore,
+        "emiAmount": emiAmount,
+        "emiPeriodMonths": emiPeriodMonths
     }
-
 
 @app.get("/")
 async def root():
+    """Root endpoint to check if the API is working."""
     return {"message": "Loan Approval API"}
 
-#  prediction endpoint that accepts applicant data and returns loan approval status
 @app.post("/predict")
 async def predict_loan_approval(applicant: Applicant):
+    """Prediction endpoint to evaluate loan approval and related details."""
     try:
-        #  calculate loan amount and risk, then return the result
-        result = calculate_loan_amount_and_risk(applicant)
+        # Calculate loan amount and risk, then return the result
+        result = calculateLoanAndEmi(applicant)
         return JSONResponse(content=jsonable_encoder(result), status_code=200)
     except ValidationError as e:
         # Handle validation errors and return a 400 Bad Request response
         raise HTTPException(status_code=400, detail=e.errors())
+    except HTTPException as e:
+        # Handle HTTP exceptions and return the error message
+        raise e
+    except Exception as e:
+        # Handle unexpected errors and return a 500 Internal Server Error response
+        return JSONResponse(content={"detail": str(e)}, status_code=500)
