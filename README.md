@@ -2,6 +2,9 @@
 
 # Micro Credit Application Using Machine Learning
 
+
+![Loan Application Process](/loan_sass_application/src/assets/sample.png)
+
 ## Description
 
 This project includes a comprehensive loan application system featuring user authentication, a machine learning model for loan eligibility, and a React frontend. The system evaluates loan applications based on various financial metrics and user profiles, providing loan approval status, risk scores, and EMI calculations.
