@@ -3,7 +3,8 @@
 # Micro Credit Application Using Machine Learning
 
 
-![Loan Application Process](/loan_sass_application/src/assets/sample.png)
+![Loan Application Process](../loan_sass_application/src/assets/sample.png)
+
 
 ## Description
 
