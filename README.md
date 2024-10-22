@@ -1,10 +1,6 @@
-
-
 # Micro Credit Application Using Machine Learning
 
-
-![Loan Application Process](../loan_sass_application/src/assets/sample.png)
-
+![Micro Credit Application Home](./public/sample.png)
 
 ## Description
 
@@ -17,7 +13,6 @@ This project includes a comprehensive loan application system featuring user aut
 - [Machine Learning Model Documentation](#machine-learning-model-documentation)
 - [React Application](#react-application)
 
-  
 ## React Application
 
 ### Description
@@ -46,7 +41,6 @@ The React application provides a user-friendly interface for interacting with th
    npm run dev
    ```
 2. Access the React application at `http://localhost:3000`.
-
 
 ## Node.js Authentication API
 
@@ -160,8 +154,6 @@ The following features are used in the model:
 - `loan_amount`: **Requested Loan Amount** - The amount the applicant is requesting to borrow
 - `annual_interest_rate`: **Annual Interest Rate** - The interest rate on the loan.
 
-
-
 ### Installation and Running Guide
 
 #### Installation
@@ -174,27 +166,32 @@ The following features are used in the model:
    ```bash
     pip install -r requirements.txt
    ```
-3.Running the Model on Google Colab
+   3.Running the Model on Google Colab
 
-  Upload the Colab Notebook:
-  Open Google Colab in your browser: Google Colab
-  Upload the Colab notebook file from your local machine to Colab.
+Upload the Colab Notebook:
+Open Google Colab in your browser: Google Colab
+Upload the Colab notebook file from your local machine to Colab.
 
-  Install any necessary libraries by running the following command in a Colab cell:
-  **Install Required Libaries**:
-   ```bash
-    !pip install <required-libraries>
-   ```
+Install any necessary libraries by running the following command in a Colab cell:
+**Install Required Libaries**:
+
+```bash
+ !pip install <required-libraries>
+```
+
 4.Read the Dataset:
-  
-  Load your dataset into a Pandas DataFrame. Adjust the path according to your file location:
-  **Navigate to the Dataset Directory**:
-   ```bash
-   cd data
-   ```
-  ```bash
-    df = pd.read_csv("/content/loan_application_data.csv")
-   ```
+
+Load your dataset into a Pandas DataFrame. Adjust the path according to your file location:
+**Navigate to the Dataset Directory**:
+
+```bash
+cd data
+```
+
+```bash
+  df = pd.read_csv("/content/loan_application_data.csv")
+```
+
 5.Run the Model:
 
 Execute the cells in your Colab notebook to run the model. Ensure that all necessary code blocks, such as data preprocessing, model training, and prediction, are executed in the correct order.
@@ -209,10 +206,11 @@ After running the model, you can view the results and output directly in the Col
 - **Method**: POST
 - **Description**: Predicts loan approval, calculates the maximum loan amount, and assesses risk score based on applicant data.
 - **Request Body**:
+
   - `current_salary`: Float - Applicant's current salary.
   - `previous_salary`:Float - Applicant's previous salary.
   - `previous_hike_amount`: Float - Previous Hike Amount.
-  - `expected_next_hike_amount`: Float - Expect  Next Hike Amount
+  - `expected_next_hike_amount`: Float - Expect Next Hike Amount
   - `savings_per_month`: Float - Monthly savings.
   - `current_emis`: Float - Existing EMI payments.
   - `residential_assets_value`: Float - Value of residential assets.
@@ -301,10 +299,3 @@ After running the model, you can view the results and output directly in the Col
    uvicorn main:app --reload
    ```
 2. The API will be accessible at `http://localhost:8000`.
-
-
-
-
-
-
-

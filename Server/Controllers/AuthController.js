@@ -12,23 +12,24 @@ const signup = async (req, res) => {
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(409).json({
-        message: "User already exists, you can login.",
+        message: "User already exists with this email. Please log in instead.",
         success: false,
       });
     }
 
-    // Create a new user with hashed password
+    // Create a new user with a hashed password
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new UserModel({
       name,
       email,
-      password: await bcrypt.hash(password, 10),
+      password: hashedPassword,
       phoneNumber,
     });
 
     // Save the new user to the database
     await newUser.save();
 
-    // Respond with success message
+    // Respond with a success message
     res.status(201).json({
       message: "Signup successful.",
       success: true,
@@ -48,7 +49,7 @@ const login = async (req, res) => {
     // Extract email and password from request body
     const { email, password } = req.body;
 
-    // if get fails auth error message
+    // Define an error message for failed authentication
     const errorMsg = "Authentication failed: email or password is incorrect.";
 
     // Find user by email
@@ -57,7 +58,7 @@ const login = async (req, res) => {
       return res.status(403).json({ message: errorMsg, success: false });
     }
 
-    // Compare with password
+    // Compare the provided password with the stored hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(403).json({ message: errorMsg, success: false });
@@ -70,7 +71,7 @@ const login = async (req, res) => {
       { expiresIn: "24h" } // Token expiration time
     );
 
-    // Respond with success message
+    // Respond with a success message and the token
     res.status(200).json({
       message: "Login successful.",
       success: true,

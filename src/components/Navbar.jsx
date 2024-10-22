@@ -11,14 +11,15 @@ const Navbar = () => {
   useEffect(() => {
     // Check if the user is logged in by verifying if the token exists in localStorage
     const token = localStorage.getItem("jwtToken");
-    setIsLoggedIn(!!token); // Convert token to a boolean value
+    setIsLoggedIn(!!token);
   }, []);
 
   const handleLogout = () => {
     // Clear JWT token from local storage
     localStorage.removeItem("jwtToken");
     setIsLoggedIn(false);
-    navigate("/login"); // Redirect to home page after logout
+    //Redirect to login page after logout
+    navigate("/login");
   };
 
   return (

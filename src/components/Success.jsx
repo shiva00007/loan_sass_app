@@ -15,39 +15,47 @@ const Success = () => {
     );
   }
 
+  console.log(responseData);
   return (
     <div className="flex justify-center items-center h-screen bg-gray-800">
       <div className="bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full">
         {/* Title of the details section */}
         <h1 className="text-3xl font-bold text-white mb-6">Loan Details</h1>
 
+        {/* Approval Status Display */}
+        <div className="bg-gray-gradient p-4 rounded-md">
+          <p className="text-white text-lg">
+            <span className="font-semibold">Approval Status:</span>{" "}
+            {responseData.loanApprovalStatus}
+          </p>
+        </div>
         <div className="space-y-4">
           {/* Loan Amount Display */}
           <div className="bg-gray-800 p-4 rounded-md">
             <p className="text-white text-lg">
-              <span className="font-semibold">Loan Amount:</span> Rs
-              {responseData.max_loan_amount}
+              <span className="font-semibold">Loan Amount: </span>
+              <span>Rs {responseData.maxLoanAmount}</span>
             </p>
           </div>
-          {/* Approval Status Display */}
+          {/* EMI Amount Display */}
           <div className="bg-gray-gradient p-4 rounded-md">
             <p className="text-white text-lg">
-              <span className="font-semibold">Approval Status:</span>{" "}
-              {responseData.loan_approval_status}
+              <span className="font-semibold">EMI Amount: </span> Rs{" "}
+              {responseData.emiAmount}
             </p>
           </div>
           {/* EMI Period Display */}
           <div className="bg-gray-gradient p-4 rounded-md">
             <p className="text-white text-lg">
-              <span className="font-semibold">EMI Period:</span>{" "}
-              {responseData.emi_period_months} months
+              <span className="font-semibold">EMI Period: </span>{" "}
+              {responseData.emiPeriodMonths} months
             </p>
           </div>
           {/* Risk Score Display */}
           <div className="bg-gray-gradient p-4 rounded-md">
             <p className="text-white text-lg">
               <span className="font-semibold">Risk Score:</span>{" "}
-              {responseData.risk_score}
+              {responseData.riskScore}
             </p>
           </div>
         </div>
